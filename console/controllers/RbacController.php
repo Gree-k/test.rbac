@@ -55,8 +55,6 @@ class RbacController extends Controller
         $auth->addChild($admin, $deleteNews);
 
         $auth->assign($admin, 1);
-        $auth->assign($editor, 2);
-        $auth->assign($user, 3);
     }
 
 }

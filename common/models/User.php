@@ -5,7 +5,9 @@ namespace common\models;
 
 use Yii;
 use yii\base\NotSupportedException;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\IdentityInterface;
 
 class User
@@ -14,7 +16,22 @@ class User
 
     public static function tableName()
     {
-        return 'user';
+        return 'users';
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                'value' => new Expression('NOW()'),
+            ],
+        ];
     }
 
     public static function findIdentity($id)
@@ -37,14 +54,19 @@ class User
         return $this->getPrimaryKey();
     }
 
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    public function setPassword($password)
+    {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
     public function getAuthKey()
     {
         return false;
-    }
-
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
     }
 
     public function validateAuthKey($authKey)

@@ -6,20 +6,20 @@ class m160814_165506_create_user_teble extends Migration
 {
     public function up()
     {
-        $this->createTable('user', [
+        $this->createTable('users', [
             'id' => $this->primaryKey(),
             'username' => $this->string()->notNull()->unique(),
-            'password' => $this->string()->notNull(),
+            'password_hash' => $this->text()->notNull(),
             'email' => $this->string()->notNull()->unique(),
             'blocked' => $this->smallInteger()->notNull()->defaultValue(0),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime(),
         ]);
     }
 
     public function down()
     {
-        $this->dropTable('user');
+        $this->dropTable('users');
     }
 
     /*

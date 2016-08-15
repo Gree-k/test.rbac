@@ -10,6 +10,8 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language' => 'ru_Ru',
+    'defaultRoute' => 'main/index',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
@@ -17,7 +19,7 @@ return [
             'baseUrl' => ''
         ],
         'user' => [
-//            'loginUrl' => ['admin/site/login'],
+            'loginUrl' => ['main/login'],
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
@@ -36,7 +38,7 @@ return [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'main/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
